@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "mrcoop"
   gem.require_paths = ["lib"]
-  gem.version       = MrCoop::VERSION
+  gem.version       = Mrcoop::VERSION
 
   gem.required_ruby_version = '>= 1.9.2'
 

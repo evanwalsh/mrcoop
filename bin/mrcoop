@@ -3,15 +3,21 @@ require "commander/import"
 require "mrcoop"
 
 program :name, 'mrcoop'
-program :version, MrCoop::VERSION
+program :version, Mrcoop::VERSION
 program :description, 'Interact with Co-op'
 
 command :stream do |c|
   c.syntax = 'stream GROUP_ID'
   c.description = 'Streams a group\'s statuses'
   c.action do |args, options|
-    @auth = MrCoop::Authentication.read
-    MrCoop::Stream.new(@auth, args[0])
+    @session ||= Mrcoop::Session.new
+    if !@session
+      say "You need to run mrcoop auth EMAIL PASSWORD to get started"
+    end
+
+    @session.group(args[0]).statuses.recent.reverse.each do |status|
+      Mrcoop.parse status
+    end
   end
 end
 
@@ -19,8 +25,8 @@ command :auth do |c|
   c.syntax = 'auth EMAIL PASSWORD'
   c.description = 'Save your authentication details for Co-op'
   c.action do |args, options|
-    @auth = MrCoop::Authentication.new(args[0], args[1])
-    if @auth.write!
+    if Mrcoop::Authentication.write! args[0], args[1]
+      @auth = Mrcoop::Session.new
       say "Your authentication details have been saved. Now: mrcoop stream GROUP_ID!".color(:green)
     else
       say "Sorry, but your authentication details could not be saved.".color(:red)

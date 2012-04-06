@@ -5,7 +5,7 @@ class TestMrcoop < MiniTest::Unit::TestCase
 
   end
 
-  def test_the_truth
-    assert true
+  def test_parse_status
+    
   end
 end

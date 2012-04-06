@@ -5,7 +5,7 @@ class TestStream < MiniTest::Unit::TestCase
     @stream = MrCoop::Stream.new(12345)
   end
 
-  def test_the_truth
-    assert true
+  def test_stream_read
+    
   end
 end
