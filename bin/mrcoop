@@ -1,1 +1,29 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
+require "commander/import"
+require "mrcoop"
+
+program :name, 'mrcoop'
+program :version, MrCoop::VERSION
+program :description, 'Interact with Co-op'
+
+command :stream do |c|
+  c.syntax = 'stream GROUP_ID'
+  c.description = 'Streams a group\'s statuses'
+  c.action do |args, options|
+    @auth = MrCoop::Authentication.read
+    MrCoop::Stream.new(@auth, args[0])
+  end
+end
+
+command :auth do |c|
+  c.syntax = 'auth EMAIL PASSWORD'
+  c.description = 'Save your authentication details for Co-op'
+  c.action do |args, options|
+    @auth = MrCoop::Authentication.new(args[0], args[1])
+    if @auth.write!
+      say "Your authentication details have been saved. Now: mrcoop stream GROUP_ID!".color(:green)
+    else
+      say "Sorry, but your authentication details could not be saved.".color(:red)
+    end
+  end
+end

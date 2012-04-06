@@ -4,7 +4,6 @@ require 'webmock/test_unit'
 require 'mrcoop'
 
 include WebMock::API
-stub_request(:any, Coop.base_uri)
 
 def fixture(file)
   File.read(File.join(Dir.pwd, 'test', 'fixtures', file))

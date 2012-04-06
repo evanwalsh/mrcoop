@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TestMrcoop < MiniTest::Unit::TestCase
+class TestAuthentication < MiniTest::Unit::TestCase
   def setup
 
   end

@@ -1,3 +1,3 @@
-module MrCoop
-  VERSION = "0.0.1"
+class MrCoop
+  VERSION = "1.0.0"
 end

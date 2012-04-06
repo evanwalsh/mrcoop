@@ -1,5 +1,8 @@
-require "mrcoop/version"
+require 'coop'
+require 'mrcoop/authentication'
+require 'mrcoop/stream'
+require 'mrcoop/version'
 
 module MrCoop
-  # Your code goes here...
+  
 end
