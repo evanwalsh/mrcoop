@@ -10,13 +10,37 @@ command :stream do |c|
   c.syntax = 'stream GROUP_ID'
   c.description = 'Streams a group\'s statuses'
   c.action do |args, options|
-    @session ||= Mrcoop::Session.new
+    @auth = Mrcoop::Authentication.read
+    @session ||= Coop.new(@auth[:email], @auth[:password])
     if !@session
       say "You need to run mrcoop auth EMAIL PASSWORD to get started"
     end
 
-    @session.group(args[0]).statuses.recent.reverse.each do |status|
-      Mrcoop.parse status
+    while true do
+      if @master
+        new_statuses = @session.group(args[0]).statuses.recent.reverse
+
+        if (new_statuses - @master).size > 0
+          @statuses = new_statuses - @statuses
+          @master = new_statuses
+          skip = false
+        else
+          skip = true
+        end
+      else
+        @statuses = @session.group(args[0]).statuses.recent.reverse
+        @master = @statuses
+      end
+
+      puts "--- updated at #{Time.now} ---".color(:green)
+
+      if !skip
+        @statuses.each do |status|
+          Mrcoop.parse status
+        end
+      end
+
+      sleep 7
     end
   end
 end

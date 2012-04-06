@@ -1,19 +1,20 @@
 require 'coop'
+require 'rainbow'
 require 'mrcoop/authentication'
-require 'mrcoop/stream'
+require 'mrcoop/session'
 require 'mrcoop/version'
 
 module Mrcoop
   class << self
     def parse status
-      if s.text && s.text.match(/(\@all)/)
-        notify "#{s.text}", title: "#{s.user.name} sent a message to everyone"
+      if status.text && status.text.match(/(\@all)/)
+        notify "#{status.text}", title: "#{status.user.name} sent a message to everyone"
         color = :yellow
       else
         color = :blue
       end
 
-      puts "#{s.user.name}: ".color(color)+"#{if s.task then "(#{s.project}/#{s.task}) " end}#{parse(s.text)}"
+      puts "#{status.user.name}: ".color(color)+"#{if status.task then "(#{status.project}/#{status.task}) " end}#{status.text}"
     end
   end
 end
